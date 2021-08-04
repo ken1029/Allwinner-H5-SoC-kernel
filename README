@@ -1,3 +1,42 @@
+3.2.3 Compile Linux Kernel
+Download Linux Kernel Source Code:
+
+$ git clone https://github.com/friendlyarm/linux.git -b sunxi-4.14.y --depth 1
+Compile and Update Linux Kernel:
+
+$ cd linux
+$ touch .scmversion
+$ make sunxi_arm64_defconfig ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-
+$ make Image dtbs ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-
+If your compilation is successful an Image will be generated under "arch/arm64/boot/" and a dtb file will be generated under "arch/arm64/boot/dts/allwinner/".
+
+If your SD card's boot partition is mounted at "/media/SD/boot/" you can update its Image and dtb files by running the following commands:
+
+$ cp arch/arm64/boot/Image /media/SD/boot/
+$ cp arch/arm64/boot/dts/allwinner/sun50i-h5-nanopi*.dtb /media/SD/boot/
+Compile and Update Modules:
+
+$ cd linux
+$ make modules ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-
+If your SD card's rootfs partition is mounted at "/media/SD/rootfs/" you can update its modules by running the following commands:
+
+$ cd linux
+$ make modules_install INSTALL_MOD_PATH=/media/SD/rootfs/ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Linux kernel
 ============
 
