@@ -70,7 +70,11 @@ static int sun8i_ths_get_temp(void *_data, int *out)
 		return -EBUSY;
 
 	/* Formula and parameters from the Allwinner 3.4 kernel */
-	*out = 217000 - (int)((data->temp * 1000000) / 8253);
+	// *out = 217000 - (int)((data->temp * 1000000) / 8253);
+	if (data->temp >= 0x500)
+		*out = (int)223000 - (data->temp * 1191)/10;
+	else
+		*out = (int)259000 - (data->temp * 1452)/10;
 	return 0;
 }
 
@@ -89,6 +93,7 @@ static irqreturn_t sun8i_ths_irq_thread(int irq, void *_data)
 
 static void sun8i_ths_h3_init(struct sun8i_ths_data *data)
 {
+        printk(KERN_INFO "ken:H5 Hello, world!\n");
 	writel(THS_H3_CTRL0_SENSOR_ACQ0(THS_H3_CTRL0_SENSOR_ACQ0_VALUE),
 		data->regs + THS_H3_CTRL0);
 	writel(THS_H3_FILTER_EN | THS_H3_FILTER_TYPE(THS_H3_FILTER_TYPE_VALUE),
